@@ -1,8 +1,15 @@
-# mvp-engenharia-dados
-Plataforma Omnichannel de Valuation e Inteligência de A&amp;R Musical
-# MVP de Engenharia de Dados: Plataforma Omnichannel de Valuation e A&R Musical
+# MVP de Engenharia de Dados: Plataforma Omnichannel de Valuation e Inteligência de A&R Musical
 
-## 1. Visão Geral do Projeto e Problema de Negócio
+## Sumário
+1. [Visão Geral do Projeto e Problema de Negócio](#1-visao-geral)
+2. [Arquitetura de Dados e Governança](#2-arquitetura)
+3. [Engenharia de Dados e Pipeline Medallion](#3-engenharia)
+4. [Dicionário de Dados Integrado](#4-dicionario)
+5. [Dashboard Executivo e Análise de Resultados](#5-dashboard)
+6. [Considerações Finais e Pontos de Melhoria](#6-consideracoes)
+7. [Autoavaliação](#7-autoavaliacao)
+
+## <a id="1-visao-geral"></a>1. Visão Geral do Projeto e Problema de Negócio
 
 No mercado fonográfico e editorial moderno, a pulverização do consumo de música entre canais digitais (Spotify, Deezer) e rádio (*Airplay*) gera um enorme desafio de **retenção de receita** (*royalty leakage*). Músicas de alto desempenho no *Top Charts* frequentemente dependem de **coautoria múltipla ($1/N$)**, em que compositores independentes sem contrato editorial ativo deixam de arrecadar centenas de milhares de reais por conflitos ou ausência de cadastro estandardizado de metadados.
 
@@ -13,7 +20,7 @@ Este projeto consiste em um **Produto de Dados (Data Product)** desenvolvido no 
 
 ---
 
-## 2. Arquitetura e Governança de Dados
+## <a id="2-arquitetura"></a>2. Arquitetura e Governança de Dados
 
 A solução foi estruturada sob a **Arquitetura Medallion** (Camadas Bronze, Silver e Gold) e governada via **Unity Catalog Delta Lake**, garantindo rastreabilidade, histórico de auditoria e alta performance de consulta.
 
@@ -33,7 +40,7 @@ Persistência e governança das tabelas em arquitetura Medallion sob o esquema `
 
 ---
 
-## 3. Engenharia de Dados & Pipeline Medallion
+## <a id="3-engenharia"></a>3. Engenharia de Dados & Pipeline Medallion
 
 ### Camada Bronze (Ingestão)
 Carga do arquivo fonte e harmonização inicial dos canais digitais e de rádio, unificando os esquemas e aplicando *bypass* do cabeçalho proprietário da Crowley.
@@ -77,7 +84,7 @@ Agregação das métricas comerciais, cálculo logarítmico do Lead Score e conf
 
 ---
 
-## 4. Dicionário de Dados Integrado
+## <a id="4-dicionario"></a>4. Dicionário de Dados Integrado
 
 | Coluna | Tipo | Regra de Negócio / Descrição |
 | :--- | :--- | :--- |
@@ -94,7 +101,7 @@ Agregação das métricas comerciais, cálculo logarítmico do Lead Score e conf
 
 ---
 
-## 5. Dashboard Executivo & Resposta às Perguntas de Negócio
+## <a id="5-dashboard"></a>5. Dashboard Executivo & Resposta às Perguntas de Negócio
 
 O painel final foi codificado programaticamente em Python (`matplotlib`/`seaborn`) com tema escuro de alto contraste executivo, respondendo diretamente às hipóteses estratégicas de negócio.
 
@@ -125,7 +132,7 @@ O painel final foi codificado programaticamente em Python (`matplotlib`/`seaborn
 
 ---
 
-## 6. Considerações Finais e Pontos de Melhoria
+## <a id="6-consideracoes"></a>6. Considerações Finais e Pontos de Melhoria
 
 ### Considerações Finais
 O desenvolvimento deste **MVP** comprovou que é possível resolver um problema histórico do mercado da música, o vazamento de receita e a desorganização de metadados, combinando engenharia de dados moderna e modelagem financeira. A arquitetura Medallion no Databricks não apenas organizou os dados brutos da Crowley, mas automatizou o cálculo proporcional de coautoria ($1/N$) e entregou uma matriz clara para a tomada de decisão comercial da equipe de A&R.
@@ -137,7 +144,7 @@ O desenvolvimento deste **MVP** comprovou que é possível resolver um problema 
 
 ---
 
-## 7. Autoavaliação
+## <a id="7-autoavaliacao"></a>7. Autoavaliação
 
 Desenvolver este MVP foi uma experiência de enorme aprendizado e superação. No início da sprint, encarar o volume de dados e construir a arquitetura do zero no Databricks parecia um desafio intimidador. No entanto, decidir encarar um problema real de negócio me motivou a ir muito além do básico da teoria.
 
