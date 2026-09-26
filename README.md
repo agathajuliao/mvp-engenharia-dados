@@ -132,24 +132,30 @@ Para analisar os resultados da camada Gold, montei os gráficos diretamente em P
 
 ---
 
-## <a id="6-consideracoes"></a>6. Considerações Finais e Pontos de Melhoria
+---
 
-### Considerações Finais
-O projeto mostrou como aplicar Engenharia de Dados para resolver um problema real do mercado da música: o acompanhamento de receitas e a organização de cadastros de autores. Usar a arquitetura Medallion no Databricks permitiu organizar os dados brutos da Crowley, calcular a divisão exata de coautoria ($1/N$) e apresentar dados claros para a tomada de decisão.
+## <a id="6-consideracoes"></a>6. Considerações Finais, Premissas e Pontos de Melhoria
 
-### Pontos de Melhoria para o Futuro:
-1. **Automação das Execuções:** Configurar o agendamento dos scripts para rodarem sozinhos usando o **Databricks Workflows** ou o **Azure Data Factory**.
-2. **Entrada de Dados em Tempo Real:** Evoluir a camada Bronze para receber atualizações contínuas de dados (*Structured Streaming*) direto das APIs do Spotify e do YouTube.
-3. **Modelos de Previsão de Sucesso:** Adicionar etapas de Machine Learning na camada Gold para prever se uma música nova tem potencial de estourar com base no histórico dos compositores.
+### Considerações Finais e Premissas de Modelagem
+O desenvolvimento deste **MVP** comprovou a viabilidade de resolver gargalos do mercado da música por meio de Engenharia de Dados. Para a estruturação do modelo no Databricks Serverless, foram adotadas as seguintes premissas de negócio e engenharia:
+
+1. **Rateio Fracionado ($1/N$):** Como os relatórios brutos de auditoria de mercado (*Crowley Charts*) fornecem a relação de compositores sem discriminar os percentuais contratuais individuais (mantidos em sigilo pelo ECAD/Editoras), o pipeline adota a divisão igualitária proporcional ($1/N$) como a melhor aproximação estocástica para evitar a duplicação de receitas no faturamento.
+2. **Normalização Financeira (Escala Logarítmica):** A distribuição de faturamento no mercado musical segue a lei de potência (Cauda Longa). O uso da transformação logarítmica ($\ln(1 + \text{Valuation}$) no algoritmo de *Lead Score* foi essencial para evitar que hits atípicos distorcessem a escala de pontuação (0 a 100).
+3. **Modelagem de Fontes Omnichannel:** A alíquota diferenciada entre Rádio ($R\$$ 3,50 por execução) e Streaming Digital ($R\$$ 0,012 por stream) reflete a assimetria real de arrecadação entre direitos de Execução Pública (ECAD) e reproduções em plataformas sob demanda.
+
+### Mapeamento de Limitações e Trabalhos Futuros:
+1. **Contratos e Percentuais Dinâmicos:** Evoluir o pipeline para cruzar a Camada Silver com uma tabela relacional de contratos individuais, permitindo divisões percentuais assimétricas ($70\%/30\%$, por exemplo).
+2. **Orquestração Automática de Jobs:** Em um ambiente de produção comercial, migrar da execução manual para um fluxo agendado e monitorado via **Databricks Workflows** ou **Azure Data Factory**.
+3. **Ingestão Contínua (Streaming):** Evoluir a Camada Bronze para processar cargas em tempo real (*Structured Streaming*), consumindo APIs diretas do Spotify Web API e YouTube Content ID.
+4. **Modelagem Preditiva Avançada:** Expandir o algoritmo de *Lead Score* na Camada Gold com modelos de Machine Learning (como *XGBoost*) para prever o potencial de estouro (*hit potential*) de novos lançamentos antes da consolidação do mercado.
 
 ---
 
 ## <a id="7-autoavaliacao"></a>7. Autoavaliação
+Desenvolver este MVP foi uma experiência de enorme aprendizado técnico e visão de produto. No início da sprint, encarar o volume de dados e construir a arquitetura do zero no Databricks parecia um desafio intimidador. No entanto, decidir encarar um problema real de negócio me motivou a ir muito além do básico da teoria.
 
-Fazer este MVP foi uma oportunidade de colocar em prática o aprendizado de Engenharia de Dados. No início, montar a estrutura do zero no Databricks parecia um desafio complexo, mas focar em um problema real ajudou a entender o motivo de cada etapa do processo.
-
-Os pontos principais da minha jornada foram:
+Destaco como principais pontos da minha trajetória neste trabalho:
 
 * **Prática em PySpark:** Aprendi a aplicar rotinas de tratamento de dados, como limpeza de textos e o uso da função `explode()` para separar listas de autores, garantindo a organização das tabelas no **Unity Catalog**.
 * **Entendimento do Problema:** Percebi que a engenharia de dados precisa fazer sentido para quem vai usar as informações. Definir as regras de pagamento de royalties e a nota de prioridade ajudou a transformar dados brutos em respostas úteis.
-* **Autonomia:** Construir a solução desde a carga do arquivo até a visualização gráfica trouxe a segurança de que consigo planejar e entregar um projeto de dados do início ao fim.
+* **Autonomia e Confiança Técnica:** Construir a solução desde a carga do arquivo até a visualização gráfica trouxe a segurança de que consigo planejar e entregar um projeto de dados do início ao fim.
